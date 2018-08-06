@@ -5,45 +5,31 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
-const sqlite3 = require('sqlite3').verbose();
- 
-// open database in memory
-
-let db = new sqlite3.Database('./db/inventory.db', sqlite3.OPEN_READWRITE, (err) => {
-  if (err) {
-    console.error(err.message);
-  }
-  console.log('Connected to the inventory database.');
-});
+//const database_helper = require('./db_helper'); 
+//var database = database_helper.connect();
+  
+//database_helper.query(database);
 
 let homeWindow;
 
 function createWindow(){
-    homeWindow = new BrowserWindow();
+    homeWindow = new BrowserWindow({width: 800, height: 600});
     homeWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
+        pathname: path.join(__dirname, './index/index.html'),
         protocol: 'file',
         slashes: true
     }));
-    homeWindow.webContents.openDevTools();
+    //homeWindow.webContents.openDevTools();
        
     homeWindow.on('closed', () => {
         homeWindow = null;
     });
 }
 
-
-
 app.on('ready', createWindow);
 app.on('window-all-closed', () => {
     if(process.platform !== 'darwin'){
-        // close the database connection
-        db.close((err) => {
-            if (err) {
-            return console.error(err.message);
-            }
-            console.log('Closed the database connection.');
-        });
+        //database_helper.disconnect(database);
         app.quit();
     }
 });
