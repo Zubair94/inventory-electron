@@ -7,6 +7,7 @@ database.all(sql, [], (err, rows) => {
     if (err) {
         throw err;
     }
+    //console.log(rows);
     html = "<table id='inventory-table' class='table table-bordered'>";
     html += "<thead>";
     html += "<tr>";

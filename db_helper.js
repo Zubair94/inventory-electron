@@ -19,8 +19,28 @@ function disconnect(db){
     });
 }
 
+function createDatabase(db, sqlcheck, sqlcreate){
+  return new Promise((resolve, reject) => {
+    db.run(sqlcheck, (err)=>{
+      if(err){
+          console.log('creating database');
+          db.run(sqlcreate, (err) => {
+                  if(err){
+                      reject('failed to create database');
+                  }
+                  resolve('database created');
+              });
+      }
+      else{
+          resolve('database already created');
+      }
+    });
+  });
+    
+}
+
 /*function query(db, sql){
-    db.all(sql, [], (err, rows) => {
+    db.run(sql, [], (err, rows) => {
         if (err) {
           throw err;
         }
@@ -41,5 +61,6 @@ function disconnect(db){
 
 module.exports = {
     'connect': connect,
-    'disconnect': disconnect
+    'disconnect': disconnect,
+    'create': createDatabase
 }

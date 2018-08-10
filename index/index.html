@@ -24,16 +24,18 @@
             
         </div>
     </div>
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
     <script src="../node_modules/jquery/dist/jquery.slim.min.js"></script>
     <script src="../node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script>if (window.module) module = window.module;</script>
     <script>require('./index.js')</script>
     <script>
         function searchName() {
         var input, filter, table, tr, td, i;
         input = document.getElementById("search");
         filter = input.value.toUpperCase();
-        console.log("here", filter);
+        //console.log("here", filter);
         table = document.getElementById("inventory-table");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
@@ -48,5 +50,6 @@
         }
         }
     </script>
+    
 </body>
 </html>
