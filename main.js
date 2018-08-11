@@ -6,8 +6,10 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
 const database_helper = require('./db_helper'); 
+//app.setPath('userDB', 'db/inventory.db');
+//const dbPath = app.getPath('userDB');
 var database = database_helper.connect();
-  
+
 //database_helper.query(database);
 let sqlCheck = `CREATE TABLE inventorylist (
     item_id integer PRIMARY KEY AUTOINCREMENT,

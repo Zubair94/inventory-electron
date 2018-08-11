@@ -4,8 +4,8 @@
   "description": "Inventory Management",
   "main": "main.js",
   "scripts": {
+    "package": "electron-builder --dir",
     "start": "electron .",
-    "rebuild": "electron-rebuild -f -w better-sqlite3",
     "postinstall": "electron-builder install-app-deps"
   },
   "author": "Zubair",
