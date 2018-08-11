@@ -11,7 +11,7 @@ database.all(sql, [], (err, rows) => {
     html = "<table id='inventory-table' class='table table-bordered'>";
     html += "<thead>";
     html += "<tr>";
-    html += "<tr><th scope='col'>Item_ID</th><th scope='col'>Item_Name</th><th scope='col'>Item_Amount</th></tr>"
+    html += "<tr><th scope='col'>Item ID</th><th scope='col'>Item Name</th><th scope='col'>Item Amount</th></tr>"
     html += "</thead>"
     html += "<tbody>"
     for(var i = 0; i < rows.length; i++){

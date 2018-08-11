@@ -27,6 +27,8 @@ addButton.addEventListener('click', (event) => {
                 throw err;
             }
             else{
+                document.getElementById("item_name").value = "";
+                document.getElementById("item_amount").value = "";
                 $("#alert-msg").show();
                 setTimeout(function() {
                     document.getElementById("alert-msg").style.display = "none";

@@ -4,18 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">    
     <link rel="stylesheet" href="report.css">
     <title>Report</title>
 </head>
 <body>
     <div class="main-div">
         <h3>Report</h3>
-        <button type="button" class="btn btn-primary" id="index">Index</button>
+        <button type="button" class="btn btn-danger" id="index">Index</button>
+        <div class="input-group date" data-provide="datepicker">
+                <input type="text" class="form-control">
+                <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-th"></span>
+                </div>
+            </div>
     </div>
-    <script src="../node_modules/jquery/dist/jquery-3.3.1.slim.min.js"></script>
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script src="../node_modules/jquery/dist/jquery.slim.min.js"></script>
     <script src="../node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script>if (window.module) module = window.module;</script>
     <script>require('./report.js')</script>
 </body>
 </html>

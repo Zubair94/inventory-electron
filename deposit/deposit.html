@@ -23,7 +23,7 @@
             </button>
         </div>
         <h3>Deposit Items</h3>
-        <button type="button" class="btn btn-primary" id="index">Index</button>
+        <button type="button" class="btn btn-danger" id="index">Index</button>
         <div class="form-group">
             <label for="item_id">Item ID</label>
             <input type="text" class="form-control" id="item_id" placeholder="Enter Item ID">
@@ -33,10 +33,17 @@
             <input type="number" class="form-control" id="item_amount" placeholder="Enter Item Amount">
         </div>
         <div class="form-group">
-            <label for="item_user">Item Amount</label>
+            <label for="item_user">Item User</label>
             <input type="text" class="form-control" id="item_user" placeholder="Deposited By">
         </div>
         <button type="button" class="btn btn-primary" id="submit">Deposit</button>
+        <div class="form-group">
+            <label for="search">Search</label>
+            <input type="text" class="form-control" id="search" onkeyup="searchName()" placeholder="Enter Item Name to Search">
+        </div>
+        <div class="table-div" id="deposit">
+            
+        </div>
     </div>
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
     <script src="../node_modules/jquery/dist/jquery.slim.min.js"></script>
@@ -44,5 +51,25 @@
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script>if (window.module) module = window.module;</script>
     <script>require('./deposit.js')</script>
+    <script>
+        function searchName() {
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("search");
+        filter = input.value.toUpperCase();
+        //console.log("here", filter);
+        table = document.getElementById("deposit-table");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+            }       
+        }
+        }
+    </script>
 </body>
 </html>

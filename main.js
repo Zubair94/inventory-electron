@@ -18,13 +18,13 @@ let sqlCheck2 = `CREATE TABLE depositlist (
     item_name text NOT NULL,
     item_amount integer NOT NULL,
     item_user text NOT NULL,
-    item_data datetime DEFAULT CURRENT_TIMESTAMP)`;
+    item_date datetime DEFAULT CURRENT_TIMESTAMP)`;
 let sqlCheck3 = `CREATE TABLE withdrawlist (
     item_id integer PRIMARY KEY AUTOINCREMENT,
     item_name text NOT NULL,
     item_amount integer NOT NULL,
     item_user text NOT NULL,
-    item_data datetime DEFAULT CURRENT_TIMESTAMP)`;
+    item_date datetime DEFAULT CURRENT_TIMESTAMP)`;
 let sqlCreate = `SELECT * from inventorylist`;
 let sqlCreate2 = `SELECT * from depositlist`;
 let sqlCreate3 = `SELECT * from withdrawlist`;
