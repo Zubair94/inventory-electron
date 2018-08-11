@@ -10,12 +10,35 @@
 </head>
 <body>
     <div class="main-div">
+    <div id="alert-msg" class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> Withdrawn Inventory.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="fail-msg" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Failure!</strong> Please Input All Fields/Insert a Number for Item Amount and Item ID.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
         <h3>Withdraw Items</h3>
         <button type="button" class="btn btn-primary" id="index">Index</button>
+        <div class="form-group">
+            <label for="item_id">Item ID</label>
+            <input type="text" class="form-control" id="item_id" placeholder="Enter Item ID">
+        </div>
+        <div class="form-group">
+            <label for="item_amount">Item Amount</label>
+            <input type="number" class="form-control" id="item_amount" placeholder="Enter Item Amount">
+        </div>
+        <button type="button" class="btn btn-primary" id="submit">Withdraw</button>
     </div>
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
     <script src="../node_modules/jquery/dist/jquery.slim.min.js"></script>
     <script src="../node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script>if (window.module) module = window.module;</script>
     <script>require('./withdraw.js')</script>
 </body>
 </html>

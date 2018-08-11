@@ -13,13 +13,11 @@ const addButton = document.getElementById("submit");
 addButton.addEventListener('click', (event) => {
     var name = document.getElementById("item_name").value;
     var amount = document.getElementById("item_amount").value;
-    var number = parseInt(amount);
-    amount = number.toString();
     console.log(name);
     console.log(amount);
     let sql = `INSERT INTO inventorylist(item_name, item_amount) VALUES (?,?)`; 
     var isnum = /^\d+$/.test(amount);
-    if(isnum && amount !== ""){
+    if(isnum && name !== ""){
         database.run(sql, name, amount, (err) => {
             if (err) {
                 $("#fail-msg").show();
