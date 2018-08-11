@@ -12,3 +12,12 @@ npm start
 ```sh
 npm run postinstall
 ```
+
+## Package Application
+
+```sh
+npm run package
+```
+Packaged app database files
+Create a file ./dist/db/inventory.db
+
