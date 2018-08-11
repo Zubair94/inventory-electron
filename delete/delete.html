@@ -4,49 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">  
-    <link rel="stylesheet" href="report.css">
-    <title>Report</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="delete.css">
+    <title>Add</title>
 </head>
 <body>
     <div class="main-div">
         <div id="alert-msg" class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Success!</strong> Deposited Inventory.
+            <strong>Success!</strong> Deleted Inventory.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div id="fail-msg" class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Failure!</strong> Please Input All Fields/Insert a Number for Item Amount and Item ID.
+            <strong>Failure!</strong> Please Input All Fields/Insert a Number for Item Amount.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <h3>Report</h3>
+        <h3>Delete Items</h3>
         <button type="button" class="btn btn-danger" id="index">Index</button>
         <div class="form-group">
-            <label for="item_datefrom">From Date</label>
-            <input type="date" class="form-control" id="item_datefrom" placeholder="Enter Date">
+            <label for="item_id">Item ID</label>
+            <input type="text" class="form-control" id="item_id" placeholder="Enter Item ID">
         </div>
-        <div class="form-group">
-            <label for="item_dateto">To Date</label>
-            <input type="date" class="form-control" id="item_dateto" placeholder="Enter Date">
-        </div>
-        <button type="button" class="btn btn-primary" id="submit-w">Get Withdraw Report</button>
-        <button type="button" class="btn btn-primary" id="submit-d">Get Deposit Report</button>
-        <div class="table-div" style="background-color: white;" id="report-withdraw">
-            
-        </div>
-        <div class="table-div" style="background-color: white;" id="report-deposit">
-        
-        </div>
+        <button type="button" class="btn btn-primary" id="submit">Delete Inventory</button>
+        <button type="button" class="btn btn-primary" id="submit-w">Delete Withdraw</button>
+        <button type="button" class="btn btn-primary" id="submit-d">Delete Deposit</button>
     </div>
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
     <script src="../node_modules/jquery/dist/jquery.slim.min.js"></script>
     <script src="../node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../node_modules/jspdf/dist/jspdf.debug.js"></script>
     <script>if (window.module) module = window.module;</script>
-    <script>require('./report.js')</script>
+    <script>require('./delete.js')</script>
 </body>
 </html>

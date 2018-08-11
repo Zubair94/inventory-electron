@@ -60,7 +60,7 @@ depositButton.addEventListener('click', (event) => {
 });
 
 function getDeposit(){
-    let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_date as date, item_user as user from depositlist`;
+    let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_date as date, item_user as user from depositlist ORDER BY datetime(item_date) DESC`;
     database.all(sql, [], (err, rows) => {
         if (err) {
             throw err;

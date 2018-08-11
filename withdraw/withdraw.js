@@ -59,7 +59,7 @@ withdrawButton.addEventListener('click', (event) => {
 });
 
 function getWithdraw(){
-    let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_date as date, item_user as user from withdrawlist`;
+    let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_date as date, item_user as user from withdrawlist ORDER BY datetime(item_date) DESC`;
     database.all(sql, [], (err, rows) => {
         if (err) {
             throw err;
