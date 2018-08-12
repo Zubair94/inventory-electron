@@ -6,7 +6,8 @@
   "scripts": {
     "package": "electron-builder --win",
     "start": "electron .",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "dist": "build"
   },
   "author": "Zubair",
   "license": "ISC",
@@ -20,5 +21,19 @@
     "jspdf": "^1.4.1",
     "popper.js": "^1.14.4",
     "sqlite3": "^4.0.2"
+  },
+  "build": {
+    "appId": "com.towelie.zubair",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    }
   }
 }
