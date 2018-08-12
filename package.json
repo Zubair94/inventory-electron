@@ -9,10 +9,10 @@
     "postinstall": "electron-builder install-app-deps",
     "dist": "build"
   },
-  "author": "Zubair",
+  "author": "LOH Technology Division",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^2.0.6",
+    "electron": "^2.0.7",
     "electron-builder": "^20.26.1"
   },
   "dependencies": {
