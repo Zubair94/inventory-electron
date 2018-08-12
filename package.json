@@ -4,7 +4,7 @@
   "description": "Inventory Management",
   "main": "main.js",
   "scripts": {
-    "package": "electron-builder --dir",
+    "package": "electron-builder --win",
     "start": "electron .",
     "postinstall": "electron-builder install-app-deps"
   },
