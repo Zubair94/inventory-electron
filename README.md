@@ -16,7 +16,7 @@ npm run postinstall
 ## Package Application
 
 ```sh
-npm run package
+npm run dist
 ```
 Packaged app database files
 Create a file ./dist/db/inventory.db
