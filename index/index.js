@@ -26,11 +26,6 @@ database.all(sql, [], (err, rows) => {
     document.getElementById("inventory").innerHTML = html;
 });
 
-    const findButton = document.getElementById("find");
-    findButton.addEventListener('click', (event) => {
-        remote.getCurrentWindow().loadFile('./find/find.html');
-    });
-
     const depositButton = document.getElementById("deposit");
     depositButton.addEventListener('click', (event) => {
         remote.getCurrentWindow().loadFile('./deposit/deposit.html');

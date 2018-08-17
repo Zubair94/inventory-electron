@@ -1,13 +1,105 @@
 
 const { remote } = require('electron');
 
-var pdf = new jsPDF('p', 'pt', 'a4');
+//var pdf = new jsPDF('p', 'pt', 'a4');
 const database_helper = require('../db_helper');
 var database = database_helper.connect();
 
 const indexButton = document.getElementById("index");
 indexButton.addEventListener('click', (event) => {
     remote.getCurrentWindow().loadFile('./index/index.html');
+});
+
+const userWButton = document.getElementById("submit-uw");
+userWButton.addEventListener('click', (event) => {
+    var user = document.getElementById("item_user");
+    let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_date as date, item_user as user from withdrawlist WHERE item_user = ?`;
+    if(user.value !== ""){
+        database.all(sql, [user.value], (err, rows) => {
+            if (err) {
+                $("#fail-msg").show();
+                setTimeout(function() {
+                    document.getElementById("fail-msg").style.display = "none";
+                }, 2000);
+                throw err;
+            }
+            $("#alert-msg").show();
+                setTimeout(function() {
+                document.getElementById("alert-msg").style.display = "none";
+            }, 2000);
+            html = "<h3>Deposit Report for User "+ user.value + "</h3>";
+            html += "<table id='report-table' class='table table-bordered'>";
+            html += "<thead>";
+            html += "<tr>";
+            html += "<tr><th scope='col'>Item ID</th><th scope='col'>Item Name</th><th scope='col'>Item Amount</th><th scope='col'>Deposited By</th><th scope='col'>Deposit Date</th></tr>"
+            html += "</thead>"
+            html += "<tbody>"
+            for(var i = 0; i < rows.length; i++){
+                html+="<tr>";
+                html+="<th scope='row'>"+rows[i].id+"</th>";
+                html+="<td>"+rows[i].name+"</td>";
+                html+="<td>"+rows[i].amount+"</td>";
+                html+="<td>"+rows[i].user+"</td>";
+                html+="<td>"+rows[i].date+"</td>";
+                html+="</tr>";
+            }
+            html += "</tbody>"
+            html += "</table>"
+            document.getElementById("report-user-w").innerHTML = html;
+        });
+    }
+    else{
+        $("#alert-msg").show();
+                setTimeout(function() {
+                document.getElementById("alert-msg").style.display = "none";
+            }, 2000);
+    }
+});
+
+const userDButton = document.getElementById("submit-ud");
+userDButton.addEventListener('click', (event) => {
+    var user = document.getElementById("item_user");
+    let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_date as date, item_user as user from depositlist WHERE item_user = ?`;
+    if(user.value !== ""){
+        database.all(sql, [user.value], (err, rows) => {
+            if (err) {
+                $("#fail-msg").show();
+                setTimeout(function() {
+                    document.getElementById("fail-msg").style.display = "none";
+                }, 2000);
+                throw err;
+            }
+            $("#alert-msg").show();
+                setTimeout(function() {
+                document.getElementById("alert-msg").style.display = "none";
+            }, 2000);
+            html = "<h3>Deposit Report for User "+ user.value + "</h3>";
+            html += "<table id='report-table' class='table table-bordered'>";
+            html += "<thead>";
+            html += "<tr>";
+            html += "<tr><th scope='col'>Item ID</th><th scope='col'>Item Name</th><th scope='col'>Item Amount</th><th scope='col'>Deposited By</th><th scope='col'>Deposit Date</th></tr>"
+            html += "</thead>"
+            html += "<tbody>"
+            for(var i = 0; i < rows.length; i++){
+                html+="<tr>";
+                html+="<th scope='row'>"+rows[i].id+"</th>";
+                html+="<td>"+rows[i].name+"</td>";
+                html+="<td>"+rows[i].amount+"</td>";
+                html+="<td>"+rows[i].user+"</td>";
+                html+="<td>"+rows[i].date+"</td>";
+                html+="</tr>";
+            }
+            html += "</tbody>"
+            html += "</table>"
+            document.getElementById("report-user-d").innerHTML = html;
+        });
+    }
+    else{
+        $("#alert-msg").show();
+                setTimeout(function() {
+                document.getElementById("alert-msg").style.display = "none";
+            }, 2000);
+    }
 });
 
 const depositReportButton = document.getElementById("submit-d");
@@ -48,16 +140,11 @@ depositReportButton.addEventListener('click', (event) => {
             html += "</tbody>"
             html += "</table>"
             document.getElementById("report-deposit").innerHTML = html;
-            margins = {
-                top: 10,
-                bottom: 10,
-                left: 10,
-                right: 10
-              };
-            pdf.addHTML( document.getElementById("report-deposit"), function() {
+            Export2Doc('report-deposit','deposit');
+            /*pdf.addHTML( document.getElementById("report-deposit"), function() {
                 pdf.setFontSize(12);
                 pdf.save('deposit.pdf');
-            });
+            });*/
             
         });
     }
@@ -109,9 +196,10 @@ withdrawReportButton.addEventListener('click', (event) => {
         html += "</tbody>"
         html += "</table>"
         document.getElementById("report-withdraw").innerHTML = html;
-        pdf.addHTML( document.getElementById("report-withdraw"), function() {
+        Export2Doc('report-withdraw','withdraw');
+        /*pdf.addHTML( document.getElementById("report-withdraw"), function() {
             pdf.save('withdraw.pdf');
-        });
+        });*/
     });
         
         
@@ -125,9 +213,39 @@ withdrawReportButton.addEventListener('click', (event) => {
     
 });
 
-function getWithdrawReport(from, to){
-   return new Promise((resolve, reject) => {
+function Export2Doc(element, filename = ''){
+    var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
+    var postHtml = "</body></html>";
+    var html = preHtml+document.getElementById(element).innerHTML+postHtml;
+
+    var blob = new Blob(['\ufeff', html], {
+        type: 'application/msword'
+    });
     
-   });
+    // Specify link url
+    var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+    
+    // Specify file name
+    filename = filename?filename+'.doc':'document.doc';
+    
+    // Create download link element
+    var downloadLink = document.createElement("a");
+
+    document.body.appendChild(downloadLink);
+    
+    if(navigator.msSaveOrOpenBlob ){
+        navigator.msSaveOrOpenBlob(blob, filename);
+    }else{
+        // Create a link to the file
+        downloadLink.href = url;
+        
+        // Setting the file name
+        downloadLink.download = filename;
+        
+        //triggering the function
+        downloadLink.click();
+    }
+    
+    document.body.removeChild(downloadLink);
 }
 

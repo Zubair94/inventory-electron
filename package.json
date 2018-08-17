@@ -4,14 +4,14 @@
   "description": "Inventory Management",
   "main": "main.js",
   "scripts": {
-    "package": "electron-builder --dir",
     "start": "electron .",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "dist": "build"
   },
-  "author": "Zubair",
+  "author": "LOH Technology Division",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^2.0.6",
+    "electron": "^2.0.7",
     "electron-builder": "^20.26.1"
   },
   "dependencies": {
@@ -20,5 +20,16 @@
     "jspdf": "^1.4.1",
     "popper.js": "^1.14.4",
     "sqlite3": "^4.0.2"
+  },
+  "build": {
+    "appId": "com.towelie.zubair",
+    "win": {
+      "icon": "icon.ico",
+      "target": [
+        {
+          "target": "nsis"
+        }
+      ]
+    }
   }
 }
