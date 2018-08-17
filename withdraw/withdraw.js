@@ -13,19 +13,25 @@ withdrawButton.addEventListener('click', (event) => {
     var id = document.getElementById("item_id").value;
     var amount = document.getElementById("item_amount").value;
     var user = document.getElementById("item_user").value;
+    var date = document.getElementById("item_date").value;
+    var local = new Date(date);
+    local = local.toLocaleString();
     var isnumid = /^\d+$/.test(id);
     var isnumamount = /^\d+$/.test(amount);
     let sql = `UPDATE inventorylist SET item_amount = item_amount - ? WHERE item_id = ?`;
     let sql2 = `SELECT * FROM inventorylist WHERE item_id = ?`;
     var item_name;
-    console.log(id);
+    //console.log(id);
     if(isnumid && isnumamount && user !==""){
         database.all(sql2, [id], (err, rows) => {
             if(err){
                 throw err;
             }
             item_name = rows[0].item_name;
-            let sql3 = `INSERT INTO withdrawlist(item_name, item_amount, item_user, item_date) VALUES(?, ?, ?, datetime('now','localtime'))`;
+            if(date === "" || undefined || null){
+                local = dateConverter();
+            }
+            let sql3 = `INSERT INTO withdrawlist(item_name, item_amount, item_user, item_date) VALUES(?, ?, ?, ?)`;
             database.run(sql, amount, id, (err) => {
                 if(err){
                     $("#fail-msg").show();
@@ -33,13 +39,14 @@ withdrawButton.addEventListener('click', (event) => {
                         document.getElementById("fail-msg").style.display = "none";
                     }, 2000);
                 }
-                database.run(sql3, item_name, amount, user, (err) => {
+                database.run(sql3, item_name, amount, user, local, (err) => {
                     if(err){
                         throw err;
                     }
                     document.getElementById("item_id").value = "";
                     document.getElementById("item_amount").value = "";
                     document.getElementById("item_user").value = "";
+                    document.getElementById("item_date").value = "";
                     getWithdraw();
                     $("#alert-msg").show();
                     setTimeout(function() {
@@ -57,6 +64,20 @@ withdrawButton.addEventListener('click', (event) => {
         }, 2000);
     }
 });
+
+function dateConverter(){
+    var date = new Date(Date.now());
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    var hour = date.getHours();
+    var minute = date.getMinutes();
+    var second = date.getSeconds();
+    var local = year.toString()+'/'+month.toString()+'/'+day.toString()+', '+hour.toString()+':'+minute.toString()+':'+second.toString();
+    dlocal = new Date(local);
+    dlocal = dlocal.toLocaleString();
+    return dlocal;
+}
 
 function getWithdraw(){
     let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_date as date, item_user as user from withdrawlist ORDER BY datetime(item_date) DESC`;

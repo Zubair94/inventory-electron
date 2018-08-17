@@ -14,6 +14,9 @@ depositButton.addEventListener('click', (event) => {
     var id = document.getElementById("item_id").value;
     var amount = document.getElementById("item_amount").value;
     var user = document.getElementById("item_user").value;
+    var date = document.getElementById("item_date").value;
+    var local = new Date(date);
+    local = local.toLocaleString();
     var isnumid = /^\d+$/.test(id);
     var isnumamount = /^\d+$/.test(amount);
     let sql = `UPDATE inventorylist SET item_amount = item_amount + ? WHERE item_id = ?`;
@@ -25,8 +28,11 @@ depositButton.addEventListener('click', (event) => {
                 throw err;
             }
         item_name = rows[0].item_name;
+        if(date === "" || undefined || null){
+            local = dateConverter();
+        }
         //console.log(item_name);    
-        let sql3 = `INSERT INTO depositlist(item_name, item_amount, item_user, item_date) VALUES(?, ?, ?, datetime('now','localtime'))`;
+        let sql3 = `INSERT INTO depositlist(item_name, item_amount, item_user, item_date) VALUES(?, ?, ?, ?)`;
         
         database.run(sql, amount, id, (err) => {
             if(err){
@@ -35,13 +41,14 @@ depositButton.addEventListener('click', (event) => {
                     document.getElementById("fail-msg").style.display = "none";
                 }, 2000);
             }
-            database.run(sql3, item_name, amount, user, (err) => {
+            database.run(sql3, item_name, amount, user, local, (err) => {
                 if(err){
                     throw err;
                 }
                 document.getElementById("item_id").value = "";
                 document.getElementById("item_amount").value = "";
                 document.getElementById("item_user").value = "";
+                document.getElementById("item_date").value = "";
                 getDeposit();
                 $("#alert-msg").show();
                 setTimeout(function() {
@@ -59,6 +66,19 @@ depositButton.addEventListener('click', (event) => {
     }
 });
 
+function dateConverter(){
+    var date = new Date(Date.now());
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    var hour = date.getHours();
+    var minute = date.getMinutes();
+    var second = date.getSeconds();
+    var local = year.toString()+'/'+month.toString()+'/'+day.toString()+', '+hour.toString()+':'+minute.toString()+':'+second.toString();
+    dlocal = new Date(local);
+    dlocal = dlocal.toLocaleString();
+    return dlocal;
+}
 function getDeposit(){
     let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_date as date, item_user as user from depositlist ORDER BY datetime(item_date) DESC`;
     database.all(sql, [], (err, rows) => {
