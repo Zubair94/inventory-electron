@@ -10,6 +10,98 @@ indexButton.addEventListener('click', (event) => {
     remote.getCurrentWindow().loadFile('./index/index.html');
 });
 
+const userWButton = document.getElementById("submit-uw");
+userWButton.addEventListener('click', (event) => {
+    var user = document.getElementById("item_user");
+    let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_date as date, item_user as user from withdrawlist WHERE item_user = ?`;
+    if(user.value !== ""){
+        database.all(sql, [user.value], (err, rows) => {
+            if (err) {
+                $("#fail-msg").show();
+                setTimeout(function() {
+                    document.getElementById("fail-msg").style.display = "none";
+                }, 2000);
+                throw err;
+            }
+            $("#alert-msg").show();
+                setTimeout(function() {
+                document.getElementById("alert-msg").style.display = "none";
+            }, 2000);
+            html = "<h3>Deposit Report for User "+ user.value + "</h3>";
+            html += "<table id='report-table' class='table table-bordered'>";
+            html += "<thead>";
+            html += "<tr>";
+            html += "<tr><th scope='col'>Item ID</th><th scope='col'>Item Name</th><th scope='col'>Item Amount</th><th scope='col'>Deposited By</th><th scope='col'>Deposit Date</th></tr>"
+            html += "</thead>"
+            html += "<tbody>"
+            for(var i = 0; i < rows.length; i++){
+                html+="<tr>";
+                html+="<th scope='row'>"+rows[i].id+"</th>";
+                html+="<td>"+rows[i].name+"</td>";
+                html+="<td>"+rows[i].amount+"</td>";
+                html+="<td>"+rows[i].user+"</td>";
+                html+="<td>"+rows[i].date+"</td>";
+                html+="</tr>";
+            }
+            html += "</tbody>"
+            html += "</table>"
+            document.getElementById("report-user-w").innerHTML = html;
+        });
+    }
+    else{
+        $("#alert-msg").show();
+                setTimeout(function() {
+                document.getElementById("alert-msg").style.display = "none";
+            }, 2000);
+    }
+});
+
+const userDButton = document.getElementById("submit-ud");
+userDButton.addEventListener('click', (event) => {
+    var user = document.getElementById("item_user");
+    let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_date as date, item_user as user from depositlist WHERE item_user = ?`;
+    if(user.value !== ""){
+        database.all(sql, [user.value], (err, rows) => {
+            if (err) {
+                $("#fail-msg").show();
+                setTimeout(function() {
+                    document.getElementById("fail-msg").style.display = "none";
+                }, 2000);
+                throw err;
+            }
+            $("#alert-msg").show();
+                setTimeout(function() {
+                document.getElementById("alert-msg").style.display = "none";
+            }, 2000);
+            html = "<h3>Deposit Report for User "+ user.value + "</h3>";
+            html += "<table id='report-table' class='table table-bordered'>";
+            html += "<thead>";
+            html += "<tr>";
+            html += "<tr><th scope='col'>Item ID</th><th scope='col'>Item Name</th><th scope='col'>Item Amount</th><th scope='col'>Deposited By</th><th scope='col'>Deposit Date</th></tr>"
+            html += "</thead>"
+            html += "<tbody>"
+            for(var i = 0; i < rows.length; i++){
+                html+="<tr>";
+                html+="<th scope='row'>"+rows[i].id+"</th>";
+                html+="<td>"+rows[i].name+"</td>";
+                html+="<td>"+rows[i].amount+"</td>";
+                html+="<td>"+rows[i].user+"</td>";
+                html+="<td>"+rows[i].date+"</td>";
+                html+="</tr>";
+            }
+            html += "</tbody>"
+            html += "</table>"
+            document.getElementById("report-user-d").innerHTML = html;
+        });
+    }
+    else{
+        $("#alert-msg").show();
+                setTimeout(function() {
+                document.getElementById("alert-msg").style.display = "none";
+            }, 2000);
+    }
+});
+
 const depositReportButton = document.getElementById("submit-d");
 depositReportButton.addEventListener('click', (event) => {
     var fromdate = document.getElementById("item_datefrom");
