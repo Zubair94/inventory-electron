@@ -6,7 +6,10 @@
   "scripts": {
     "start": "electron .",
     "postinstall": "electron-builder install-app-deps",
-    "dist": "build"
+    "package": "build --dir",
+    "package-win": "build --dir --win",
+    "dist": "build",
+    "dist-win": "build --win"
   },
   "author": "LOH Technology Division",
   "license": "ISC",
@@ -26,9 +29,7 @@
     "win": {
       "icon": "icon.ico",
       "target": [
-        {
-          "target": "nsis"
-        }
+        "nsis"
       ]
     }
   }
