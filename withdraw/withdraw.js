@@ -14,8 +14,8 @@ withdrawButton.addEventListener('click', (event) => {
     var amount = document.getElementById("item_amount").value;
     var user = document.getElementById("item_user").value;
     var date = document.getElementById("item_date").value;
-    var local = new Date(date);
-    local = local.toLocaleString();
+    //var local = new Date(date);
+    //local = local.toLocaleString();
     var isnumid = /^\d+$/.test(id);
     var isnumamount = /^\d+$/.test(amount);
     let sql = `UPDATE inventorylist SET item_amount = item_amount - ? WHERE item_id = ?`;
@@ -29,7 +29,13 @@ withdrawButton.addEventListener('click', (event) => {
             }
             item_name = rows[0].item_name;
             if(date === "" || undefined || null){
-                local = dateConverter();
+                var d = new Date(Date.now());
+                local = dateConverter(d);
+            }
+            else{
+                var sqldate = new Date(date);
+                var local = dateConverter(sqldate);
+                //console.log(sqldate);
             }
             let sql3 = `INSERT INTO withdrawlist(item_name, item_amount, item_user, item_date) VALUES(?, ?, ?, ?)`;
             database.run(sql, amount, id, (err) => {
@@ -65,18 +71,42 @@ withdrawButton.addEventListener('click', (event) => {
     }
 });
 
-function dateConverter(){
-    var date = new Date(Date.now());
+function dateConverter(date){
     var day = date.getDate();
     var month = date.getMonth() + 1;
+    if(month < 10){
+        month = '0'+month.toString();
+    }
+    else{
+        month = month.toString();
+    }
     var year = date.getFullYear();
     var hour = date.getHours();
+    if(hour < 10){
+        hour = '0'+hour.toString();
+    }
+    else{
+        hour = hour.toString();
+    }
     var minute = date.getMinutes();
+    if(minute < 10){
+        minute = '0'+minute.toString();
+    }
+    else{
+        minute = minute.toString();
+    }
     var second = date.getSeconds();
-    var local = year.toString()+'/'+month.toString()+'/'+day.toString()+', '+hour.toString()+':'+minute.toString()+':'+second.toString();
-    dlocal = new Date(local);
-    dlocal = dlocal.toLocaleString();
-    return dlocal;
+    if(second < 10){
+        second = '0'+second.toString();
+    }
+    else{
+        second = second.toString();
+    }
+    console.log(hour, minute, second);
+    var local = year.toString()+'-'+month+'-'+day.toString()+' '+hour+':'+minute+':'+second;
+    //dlocal = new Date(local);
+    //dlocal = dlocal.toLocaleString();
+    return local;
 }
 
 function getWithdraw(){

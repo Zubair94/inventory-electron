@@ -4,7 +4,7 @@ const { remote } = require('electron');
 //var pdf = new jsPDF('p', 'pt', 'a4');
 const database_helper = require('../db_helper');
 var database = database_helper.connect();
-
+var download = 'none';
 const indexButton = document.getElementById("index");
 indexButton.addEventListener('click', (event) => {
     remote.getCurrentWindow().loadFile('./index/index.html');
@@ -12,6 +12,7 @@ indexButton.addEventListener('click', (event) => {
 
 const userWButton = document.getElementById("submit-uw");
 userWButton.addEventListener('click', (event) => {
+    download = 'withdraw';
     var user = document.getElementById("item_user");
     let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_date as date, item_user as user from withdrawlist WHERE item_user = ?`;
     if(user.value !== ""){
@@ -27,7 +28,7 @@ userWButton.addEventListener('click', (event) => {
                 setTimeout(function() {
                 document.getElementById("alert-msg").style.display = "none";
             }, 2000);
-            html = "<h3>Deposit Report for User "+ user.value + "</h3>";
+            html = "<h3>Withdraw Report for User "+ user.value + "</h3>";
             html += "<table id='report-table' class='table table-bordered'>";
             html += "<thead>";
             html += "<tr>";
@@ -58,6 +59,7 @@ userWButton.addEventListener('click', (event) => {
 
 const userDButton = document.getElementById("submit-ud");
 userDButton.addEventListener('click', (event) => {
+    download = 'deposit';
     var user = document.getElementById("item_user");
     let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_date as date, item_user as user from depositlist WHERE item_user = ?`;
     if(user.value !== ""){
@@ -213,6 +215,22 @@ withdrawReportButton.addEventListener('click', (event) => {
     
 });
 
+const downloadBtn = document.getElementById("reportbtn");
+downloadBtn.addEventListener('click', (event) => {
+    console.log(download);
+    if(download === 'deposit'){
+        Export2Doc('report-user-d','user-deposit');
+    }
+    else if(download === 'withdraw'){
+        Export2Doc('report-user-w','user-withdraw');
+    }
+    else{
+        $("#fail-msg").show();
+            setTimeout(function() {
+                document.getElementById("fail-msg").style.display = "none";
+            }, 2000); 
+    }
+});
 function Export2Doc(element, filename = ''){
     var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
     var postHtml = "</body></html>";

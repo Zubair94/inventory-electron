@@ -15,8 +15,8 @@ depositButton.addEventListener('click', (event) => {
     var amount = document.getElementById("item_amount").value;
     var user = document.getElementById("item_user").value;
     var date = document.getElementById("item_date").value;
-    var local = new Date(date);
-    local = local.toLocaleString();
+    console.log(date);
+    //local = local.toLocaleString();
     var isnumid = /^\d+$/.test(id);
     var isnumamount = /^\d+$/.test(amount);
     let sql = `UPDATE inventorylist SET item_amount = item_amount + ? WHERE item_id = ?`;
@@ -29,7 +29,14 @@ depositButton.addEventListener('click', (event) => {
             }
         item_name = rows[0].item_name;
         if(date === "" || undefined || null){
-            local = dateConverter();
+            var d = new Date(Date.now());
+            //console.log(d);
+            local = dateConverter(d);
+        }
+        else{
+            var sqldate = new Date(date);
+            var local = dateConverter(sqldate);
+            //console.log(sqldate);
         }
         //console.log(item_name);    
         let sql3 = `INSERT INTO depositlist(item_name, item_amount, item_user, item_date) VALUES(?, ?, ?, ?)`;
@@ -66,18 +73,42 @@ depositButton.addEventListener('click', (event) => {
     }
 });
 
-function dateConverter(){
-    var date = new Date(Date.now());
+function dateConverter(date){
     var day = date.getDate();
     var month = date.getMonth() + 1;
+    if(month < 10){
+        month = '0'+month.toString();
+    }
+    else{
+        month = month.toString();
+    }
     var year = date.getFullYear();
     var hour = date.getHours();
+    if(hour < 10){
+        hour = '0'+hour.toString();
+    }
+    else{
+        hour = hour.toString();
+    }
     var minute = date.getMinutes();
+    if(minute < 10){
+        minute = '0'+minute.toString();
+    }
+    else{
+        minute = minute.toString();
+    }
     var second = date.getSeconds();
-    var local = year.toString()+'/'+month.toString()+'/'+day.toString()+', '+hour.toString()+':'+minute.toString()+':'+second.toString();
-    dlocal = new Date(local);
-    dlocal = dlocal.toLocaleString();
-    return dlocal;
+    if(second < 10){
+        second = '0'+second.toString();
+    }
+    else{
+        second = second.toString();
+    }
+    console.log(hour, minute, second);
+    var local = year.toString()+'-'+month+'-'+day.toString()+' '+hour+':'+minute+':'+second;
+    //dlocal = new Date(local);
+    //dlocal = dlocal.toLocaleString();
+    return local;
 }
 function getDeposit(){
     let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_date as date, item_user as user from depositlist ORDER BY datetime(item_date) DESC`;
