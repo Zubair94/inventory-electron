@@ -5,52 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="withdraw.css">
-    <title>Withdraw</title>
+    <link rel="stylesheet" href="edit.css">
+    <title>Add</title>
 </head>
 <body>
     <div class="main-div">
-    <div id="alert-msg" class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Success!</strong> Withdrawn Inventory.
+        <div id="alert-msg" class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> Added Inventory.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div id="fail-msg" class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Failure!</strong> Please Input All Fields/Insert a Number for Item Amount and Item ID.
+            <strong>Failure!</strong> Please Input All Fields/Insert a Number for Item Amount.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <h3>Withdraw Items</h3>
+        <h3>Edit Items</h3>
         <button type="button" class="btn btn-danger" id="index">Index</button>
         <button type="button" class="btn btn-danger" id="deposit">Deposit</button>
-        <button type="button" class="btn btn-danger" id="edit">Edit</button>
+        <button type="button" class="btn btn-danger" id="withdraw">Withdraw</button>
         <button type="button" class="btn btn-danger" id="report">Report</button>
         <button type="button" class="btn btn-danger" id="add">Add</button>
         <button type="button" class="btn btn-danger" id="delete">Delete</button>
         <div class="form-group">
-            <label for="item_id">Item ID</label>
-            <input type="text" class="form-control" id="item_id" placeholder="Enter Item ID">
+            <label for="item_name">Item Name</label>
+            <input type="text" class="form-control" id="item_name" placeholder="Enter Item Name">
         </div>
         <div class="form-group">
             <label for="item_amount">Item Amount</label>
-            <input type="number" class="form-control" id="item_amount" placeholder="Enter Item Amount">
+            <input type="text" class="form-control" id="item_amount" placeholder="Enter Item Amount">
         </div>
-        <div class="form-group">
-            <label for="item_user">Item User</label>
-            <input type="text" class="form-control" id="item_user" placeholder="Withdrawn By">
-        </div>
-        <div class="form-group">
-            <label for="item_date">Item Deposit Date</label>
-            <input type="datetime-local" class="form-control" id="item_date" placeholder="Deposit Date">
-        </div>
-        <button type="button" class="btn btn-primary" id="submit">Withdraw</button>
+        <button type="button" class="btn btn-primary" id="submit">Edit</button>
         <div class="form-group">
             <label for="search">Search</label>
             <input type="text" class="form-control" id="search" onkeyup="searchName()" placeholder="Enter Item Name to Search">
         </div>
-        <div class="table-div" id="withdraw">
+        <div class="table-div" id="inventory">
             
         </div>
     </div>
@@ -59,14 +51,14 @@
     <script src="../node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script>if (window.module) module = window.module;</script>
-    <script>require('./withdraw.js')</script>
+    <script>require('./edit.js')</script>
     <script>
         function searchName() {
         var input, filter, table, tr, td, i;
         input = document.getElementById("search");
         filter = input.value.toUpperCase();
         //console.log("here", filter);
-        table = document.getElementById("withdraw-table");
+        table = document.getElementById("inventory-table");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[0];

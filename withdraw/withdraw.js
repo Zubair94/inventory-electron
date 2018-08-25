@@ -8,6 +8,32 @@ indexButton.addEventListener('click', (event) => {
     remote.getCurrentWindow().loadFile('./index/index.html');
 });
 
+const depositButton = document.getElementById("deposit");
+depositButton.addEventListener('click', (event) => {
+    remote.getCurrentWindow().loadFile('./deposit/deposit.html');
+});
+
+const reportButton = document.getElementById("report");
+reportButton.addEventListener('click', (event) => {
+    remote.getCurrentWindow().loadFile('./report/report.html');
+});
+
+const addButton = document.getElementById("add");
+addButton.addEventListener('click', (event) => {
+    remote.getCurrentWindow().loadFile('./add/add.html');
+});
+
+const deleteButton = document.getElementById("delete");
+deleteButton.addEventListener('click', (event) => {
+    remote.getCurrentWindow().loadFile('./delete/delete.html');
+});
+
+const editButton = document.getElementById("edit");
+editButton.addEventListener('click', (event) => {
+    remote.getCurrentWindow().loadFile('./edit/edit.html');
+});
+
+
 const withdrawButton = document.getElementById("submit");
 withdrawButton.addEventListener('click', (event) => {
     var id = document.getElementById("item_id").value;

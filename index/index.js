@@ -51,6 +51,11 @@ database.all(sql, [], (err, rows) => {
         remote.getCurrentWindow().loadFile('./delete/delete.html');
     });
 
+    const editButton = document.getElementById("edit");
+    editButton.addEventListener('click', (event) => {
+        remote.getCurrentWindow().loadFile('./edit/edit.html');
+    });
+
     
 
    

@@ -10,6 +10,32 @@ indexButton.addEventListener('click', (event) => {
     remote.getCurrentWindow().loadFile('./index/index.html');
 });
 
+const depositButton = document.getElementById("deposit");
+depositButton.addEventListener('click', (event) => {
+    remote.getCurrentWindow().loadFile('./deposit/deposit.html');
+});
+
+const withdrawButton = document.getElementById("withdraw");
+withdrawButton.addEventListener('click', (event) => {
+    remote.getCurrentWindow().loadFile('./withdraw/withdraw.html');
+});
+
+const addButton = document.getElementById("add");
+addButton.addEventListener('click', (event) => {
+    remote.getCurrentWindow().loadFile('./add/add.html');
+});
+
+const deleteButton = document.getElementById("delete");
+deleteButton.addEventListener('click', (event) => {
+    remote.getCurrentWindow().loadFile('./delete/delete.html');
+});
+
+const editButton = document.getElementById("edit");
+editButton.addEventListener('click', (event) => {
+    remote.getCurrentWindow().loadFile('./edit/edit.html');
+});
+
+
 const userWButton = document.getElementById("submit-uw");
 userWButton.addEventListener('click', (event) => {
     download = 'withdraw';
