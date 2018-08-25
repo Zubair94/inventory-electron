@@ -30,14 +30,56 @@
         <button type="button" class="btn btn-danger" id="add">Add</button>
         <button type="button" class="btn btn-danger" id="delete">Delete</button>
         <div class="form-group">
-            <label for="item_name">Item Name</label>
-            <input type="text" class="form-control" id="item_name" placeholder="Enter Item Name">
+            <label for="item_id">Item ID</label>
+            <input type="text" class="form-control" id="item_id" placeholder="Enter Item ID">
         </div>
-        <div class="form-group">
-            <label for="item_amount">Item Amount</label>
-            <input type="text" class="form-control" id="item_amount" placeholder="Enter Item Amount">
+        <button type="button" class="btn btn-primary" id="submit">Get Inventory</button>
+        <button type="button" class="btn btn-primary" id="submit-w">Get Withdraw</button>
+        <button type="button" class="btn btn-primary" id="submit-d">Get Deposit</button>
+        <div id="edit-inventory">
+            <h4>Edit Inventory</h4>
+            <div class="form-group">
+                <label for="item_name_i">Item Name</label>
+                <input type="text" class="form-control" id="item_name_i" placeholder="Enter Item Name">
+            </div>
+            <div class="form-group">
+                <label for="item_amount_i">Item Amount</label>
+                <input type="text" class="form-control" id="item_amount_i" placeholder="Enter Item Amount">
+            </div>
+            <button type="button" class="btn btn-primary" id="submit-edit-i">Edit Inventory</button>
         </div>
-        <button type="button" class="btn btn-primary" id="submit">Edit</button>
+        <div id="edit-deposit">
+            <h4>Edit Deposit</h4>
+            <div class="form-group">
+                <label for="item_amount_d">Item Amount</label>
+                <input type="text" class="form-control" id="item_amount_d" placeholder="Enter Item Amount">
+            </div>
+            <div class="form-group">
+                <label for="item_user_d">Item User</label>
+                <input type="text" class="form-control" id="item_user_d" placeholder="Enter Item User">
+            </div>
+            <div class="form-group">
+                <label for="item_date_d">Deposit Date</label>
+                <input type="datetime-local" class="form-control" id="item_date_d" placeholder="Enter Item Date">
+            </div>
+            <button type="button" class="btn btn-primary" id="submit-edit-d">Edit Deposit</button>
+        </div>
+        <div id="edit-withdraw">
+            <h4>Edit Withdraw</h4>
+            <div class="form-group">
+                <label for="item_amount_w">Item Amount</label>
+                <input type="text" class="form-control" id="item_amount_w" placeholder="Enter Item Amount">
+            </div>
+            <div class="form-group">
+                <label for="item_user_w">Item User</label>
+                <input type="text" class="form-control" id="item_user_w" placeholder="Enter Item User">
+            </div>
+            <div class="form-group">
+                <label for="item_date_w">Withdraw Date</label>
+                <input type="datetime-local" class="form-control" id="item_date_w" placeholder="Enter Item Date">
+            </div>
+            <button type="button" class="btn btn-primary" id="submit-edit-w">Edit Withdraw</button>
+        </div>
         <div class="form-group">
             <label for="search">Search</label>
             <input type="text" class="form-control" id="search" onkeyup="searchName()" placeholder="Enter Item Name to Search">
