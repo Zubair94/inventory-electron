@@ -50,9 +50,36 @@
             <label for="search">Search</label>
             <input type="text" class="form-control" id="search" onkeyup="searchName()" placeholder="Enter Item Name to Search">
         </div>
-        <div class="table-div" id="deposit">
+        <div>
+                <ul class="nav nav-tabs" id="listTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="inventory-tab" data-toggle="tab" href="#inventory-list" role="tab" aria-controls="inventory" aria-selected="true">Inventory List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="deposit-tab" data-toggle="tab" href="#deposit-list" role="tab" aria-controls="deposit" aria-selected="false">Deposit List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="withdraw-tab" data-toggle="tab" href="#withdraw-list" role="tab" aria-controls="withdraw" aria-selected="false">Withdraw List</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="listTabContent">
+                    <div class="tab-pane fade show active" id="inventory-list" role="tabpanel" aria-labelledby="inventory-tab">
+                        <div class="table-div" id="inventory-data">
             
-        </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="deposit-list" role="tabpanel" aria-labelledby="deposit-tab">
+                        <div class="table-div" id="deposit-data">
+            
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="withdraw-list" role="tabpanel" aria-labelledby="withdraw-tab">
+                        <div class="table-div" id="withdraw-data">
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
     <script src="../node_modules/jquery/dist/jquery.slim.min.js"></script>
@@ -61,24 +88,49 @@
     <script>if (window.module) module = window.module;</script>
     <script>require('./deposit.js')</script>
     <script>
-        function searchName() {
-        var input, filter, table, tr, td, i;
-        input = document.getElementById("search");
-        filter = input.value.toUpperCase();
-        //console.log("here", filter);
-        table = document.getElementById("deposit-table");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
-            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
+            function searchName() {
+            var input, filter, table, tr, td, i, table2, tr2, td2, j, table3, tr3, td3, k;
+            input = document.getElementById("search");
+            filter = input.value.toUpperCase();
+            //console.log("here", filter);
+            table = document.getElementById("inventory-table");
+            tr = table.getElementsByTagName("tr");
+            table2 = document.getElementById("deposit-table");
+            tr2 = table2.getElementsByTagName("tr");
+            table3 = document.getElementById("withdraw-table");
+            tr3 = table3.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+                }       
             }
-            }       
-        }
-        }
-    </script>
+            for (j = 0; j < tr2.length; j++) {
+                td2 = tr2[j].getElementsByTagName("td")[0];
+                if (td2) {
+                if (td2.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr2[j].style.display = "";
+                } else {
+                    tr2[j].style.display = "none";
+                }
+                }       
+            }
+            for (k= 0; k < tr3.length; k++) {
+                td3 = tr3[k].getElementsByTagName("td")[0];
+                //console.log(td3.innerHTML);
+                if (td3) {
+                if (td3.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr3[k].style.display = "";
+                } else {
+                    tr3[k].style.display = "none";
+                }
+                }       
+            }
+            }
+        </script>
 </body>
 </html>

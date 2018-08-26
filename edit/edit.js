@@ -6,8 +6,24 @@ document.getElementById("edit-deposit").style.display = "none";
 document.getElementById("edit-withdraw").style.display = "none";
 document.getElementById("edit-inventory").style.display = "none";
 var html;
+var prevamount;
+var previousname;
 getInventoryData();
+getDepositData();
+getWithdrawData();
 
+/*const getInventoryTabLink = document.getElementById("inventory-tab");
+getInventoryTabLink.addEventListener('click', (event) => {
+    getInventoryData();
+});
+const getDepositTabLink = document.getElementById("inventory-tab");
+getDepositTabLink.addEventListener('click', (event) => {
+    getDepositData();
+});
+const getWithdrawTabLink = document.getElementById("inventory-tab");
+getWithdrawTabLink.addEventListener('click', (event) => {
+    getWithdrawData();
+});*/
 
 const indexButton = document.getElementById("index");
 indexButton.addEventListener('click', (event) => {
@@ -57,10 +73,11 @@ getInventory.addEventListener('click', (event) => {
             document.getElementById("item_name_i").value = data.name;
             document.getElementById("item_amount_i").value = data.amount;
             //console.log(data.id);
+            previousname = data.name;
             dataobj = data;
         });
     }
-    
+    document.getElementById("item_id").value = "";
 });
 
 const getDeposit = document.getElementById("submit-d");
@@ -83,16 +100,18 @@ getDeposit.addEventListener('click', (event) => {
             var date = data.date.split(" ");
             var local = date[0]+"T"+date[1];
             document.getElementById("item_date_d").value = local;
+            prevamount = data.amount;
             dataobj = data;
+            console.log(dataobj);
         });
     }
-    
+    document.getElementById("item_id").value = "";
 });
 
 const getWithdraw = document.getElementById("submit-w");
 getWithdraw.addEventListener('click', (event) => {
     var id = document.getElementById("item_id").value;
-    console.log("XD");
+    //console.log("XD");
     if(id === ""){
         $("#fail-msg").show();
         setTimeout(function() {
@@ -111,10 +130,11 @@ getWithdraw.addEventListener('click', (event) => {
             var date = data.date.split(" ");
             var local = date[0]+"T"+date[1];
             document.getElementById("item_date_w").value = local;
+            prevamount = data.amount;
             dataobj = data;
         });
     }
-    
+    document.getElementById("item_id").value = "";
 });
 
 const editInventory = document.getElementById("submit-edit-i");
@@ -124,6 +144,8 @@ editInventory.addEventListener('click', (event) => {
     var isnum = /^\d+$/.test(amount);
     if(name !== "" && isnum) {
         let sql = `UPDATE inventorylist SET item_name = ?, item_amount = ? WHERE item_id = ?`;
+        let sql2 = `UPDATE depositlist SET item_name = ? WHERE item_name = ?`;
+        let sql3 = `UPDATE withdrawlist SET item_name = ? WHERE item_name = ?`;
         var sqlobj = {
             id: dataobj.id,
             name: name || dataobj.name,
@@ -138,9 +160,21 @@ editInventory.addEventListener('click', (event) => {
                 throw err;
             }
             else{
+                database.run(sql2, sqlobj.name, previousname, (err) => {
+                    if(err){
+                        throw err;
+                    }
+                });
+                database.run(sql3, sqlobj.name, previousname, (err) => {
+                    if(err){
+                        throw err;
+                    }
+                });
                 document.getElementById("item_name_i").value = "";
                 document.getElementById("item_amount_i").value = "";
                 getInventoryData();
+                getDepositData();
+                getWithdrawData();
                 $("#alert-msg").show();
                 setTimeout(function() {
                     document.getElementById("alert-msg").style.display = "none";
@@ -157,7 +191,8 @@ editDeposit.addEventListener('click', (event) => {
     var date = document.getElementById("item_date_d").value;
     var isnum = /^\d+$/.test(amount);
     if(user !== "" && isnum){
-        let sql = `UPDATE depositlist SET item_name = ?, item_amount = ?, item_date = ? WHERE item_id = ?`;
+        let sql = `UPDATE depositlist SET item_user = ?, item_amount = ?, item_date = ? WHERE item_id = ?`;
+        
         if(date === "" || undefined || null){
             var d = new Date(Date.now());
             //console.log(d);
@@ -168,38 +203,140 @@ editDeposit.addEventListener('click', (event) => {
             var local = dateConverter(sqldate);
             //console.log(sqldate);
         }
-        var sqlobj = {
-            id: dataobj.id,
-            user: user || dataobj.user,
-            name: dataobj.name,
-            amount: amount || dataobj.amount,
-            date: local || dataobj.date
-        }
-        database.run(sql, sqlobj.user, sqlobj.amount, sqlobj.date, sqlobj.id, (err) => {
-            if (err) {
+        let sql3 = `SELECT * from inventorylist WHERE item_name = ?`;
+        //console.log(dataobj.name);
+        database.all(sql3, [dataobj.name], (err, rows) => {
+            if(err){
+                throw err;
+            }
+            //console.log(rows);
+            user =  document.getElementById("item_user_d").value;
+            amount = document.getElementById("item_amount_d").value;
+            date = document.getElementById("item_date_d").value;
+            isnum = /^\d+$/.test(amount);
+            var newamount = (parseInt(rows[0].item_amount) - parseInt(prevamount)) + parseInt(amount);
+            var sqlobj = {
+                id: dataobj.id,
+                user: user || dataobj.user,
+                name: dataobj.name,
+                amount: amount || dataobj.amount,
+                date: local || dataobj.date
+            }
+            if(user && date !== "" && isnum){
+                database.run(sql, sqlobj.user, sqlobj.amount, sqlobj.date, sqlobj.id, (err) => {
+                    if (err) {
+                        $("#fail-msg").show();
+                        setTimeout(function() {
+                            document.getElementById("fail-msg").style.display = "none";
+                        }, 2000);
+                        throw err;
+                    }
+                    else{
+                        let sql2 = `UPDATE inventorylist SET item_amount = ? WHERE item_name = ?`;
+                        database.run(sql2, newamount, sqlobj.name, (err) => {
+                            if (err) {
+                                throw err;
+                            }
+                            else{
+                                document.getElementById("item_user_d").value = "";
+                                document.getElementById("item_amount_d").value = "";
+                                document.getElementById("item_date_d").value = "";
+                                getInventoryData();
+                                getDepositData();
+                                getWithdrawData();
+                                $("#alert-msg").show();
+                                setTimeout(function() {
+                                    document.getElementById("alert-msg").style.display = "none";
+                                }, 2000);
+                            }
+                        });
+                    }
+                });
+            }
+            else{
                 $("#fail-msg").show();
                 setTimeout(function() {
                     document.getElementById("fail-msg").style.display = "none";
                 }, 2000);
+            }
+        });
+    }
+});
+
+const editWithdraw = document.getElementById("submit-edit-w");
+editWithdraw.addEventListener('click', (event) => {
+    var user =  document.getElementById("item_user_w").value;
+    var amount = document.getElementById("item_amount_w").value;
+    var date = document.getElementById("item_date_w").value;
+    var isnum = /^\d+$/.test(amount);
+    if(user !== "" && isnum){
+        let sql = `UPDATE withdrawlist SET item_user = ?, item_amount = ?, item_date = ? WHERE item_id = ?`;
+        
+        if(date === "" || undefined || null){
+            var d = new Date(Date.now());
+            //console.log(d);
+            local = dateConverter(d);
+        }
+        else{
+            var sqldate = new Date(date);
+            var local = dateConverter(sqldate);
+            //console.log(sqldate);
+        }
+        let sql3 = `SELECT * from inventorylist WHERE item_name = ?`;
+        //console.log(dataobj.name);
+        database.all(sql3, [dataobj.name], (err, rows) => {
+            if(err){
                 throw err;
             }
-            else{
-                let sql2 = `UPDATE inventorylist SET item_amount = ? WHERE item_name = ?`;
-                database.run(sql2, sqlobj.amount, sqlobj.name, (err) => {
+            //console.log(rows);
+            user =  document.getElementById("item_user_w").value;
+            amount = document.getElementById("item_amount_w").value;
+            date = document.getElementById("item_date_w").value;
+            isnum = /^\d+$/.test(amount);
+            var newamount = (parseInt(rows[0].item_amount) + parseInt(prevamount)) - parseInt(amount);
+            var sqlobj = {
+                id: dataobj.id,
+                user: user || dataobj.user,
+                name: dataobj.name,
+                amount: amount || dataobj.amount,
+                date: local || dataobj.date
+            }
+            if(user && date !== "" && isnum){
+                database.run(sql, sqlobj.user, sqlobj.amount, sqlobj.date, sqlobj.id, (err) => {
                     if (err) {
+                        $("#fail-msg").show();
+                        setTimeout(function() {
+                            document.getElementById("fail-msg").style.display = "none";
+                        }, 2000);
                         throw err;
                     }
                     else{
-                        document.getElementById("item_user_d").value = "";
-                        document.getElementById("item_amount_d").value = "";
-                        document.getElementById("item_date_d").value = "";
-                        getInventoryData();
-                        $("#alert-msg").show();
-                        setTimeout(function() {
-                            document.getElementById("alert-msg").style.display = "none";
-                        }, 2000);
+                        let sql2 = `UPDATE inventorylist SET item_amount = ? WHERE item_name = ?`;
+                        database.run(sql2, newamount, sqlobj.name, (err) => {
+                            if (err) {
+                                throw err;
+                            }
+                            else{
+                                document.getElementById("item_user_w").value = "";
+                                document.getElementById("item_amount_w").value = "";
+                                document.getElementById("item_date_w").value = "";
+                                getInventoryData();
+                                getDepositData();
+                                getWithdrawData();
+                                $("#alert-msg").show();
+                                setTimeout(function() {
+                                    document.getElementById("alert-msg").style.display = "none";
+                                }, 2000);
+                            }
+                        });
                     }
                 });
+            }
+            else{
+                $("#fail-msg").show();
+                setTimeout(function() {
+                    document.getElementById("fail-msg").style.display = "none";
+                }, 2000);
             }
         });
     }
@@ -244,6 +381,63 @@ function dateConverter(date){
     return local;
 }
 
+function getDepositData(){
+    let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_date as date, item_user as user from depositlist ORDER BY datetime(item_date) DESC`;
+    database.all(sql, [], (err, rows) => {
+        if (err) {
+            throw err;
+        }
+        //console.log(rows);
+        html = "<table id='deposit-table' class='table table-bordered'>";
+        html += "<thead>";
+        html += "<tr>";
+        html += "<tr><th scope='col'>Item ID</th><th scope='col'>Item Name</th><th scope='col'>Item Amount</th><th scope='col'>Deposited By</th><th scope='col'>Deposit Date</th></tr>"
+        html += "</thead>"
+        html += "<tbody>"
+        for(var i = 0; i < rows.length; i++){
+            html+="<tr>";
+            html+="<th scope='row'>"+rows[i].id+"</th>";
+            html+="<td>"+rows[i].name+"</td>";
+            html+="<td>"+rows[i].amount+"</td>";
+            html+="<td>"+rows[i].user+"</td>";
+            html+="<td>"+rows[i].date+"</td>";
+            html+="</tr>";
+        }
+        html += "</tbody>"
+        html += "</table>"
+        document.getElementById("deposit-data").innerHTML = html;
+    });
+}
+
+
+function getWithdrawData(){
+    let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_date as date, item_user as user from withdrawlist ORDER BY datetime(item_date) DESC`;
+    database.all(sql, [], (err, rows) => {
+        if (err) {
+            throw err;
+        }
+        //console.log(rows);
+        html = "<table id='withdraw-table' class='table table-bordered'>";
+        html += "<thead>";
+        html += "<tr>";
+        html += "<tr><th scope='col'>Item ID</th><th scope='col'>Item Name</th><th scope='col'>Item Amount</th><th scope='col'>Withdrawn By</th><th scope='col'>Withdraw Date</th></tr>"
+        html += "</thead>"
+        html += "<tbody>"
+        for(var i = 0; i < rows.length; i++){
+            html+="<tr>";
+            html+="<th scope='row'>"+rows[i].id+"</th>";
+            html+="<td>"+rows[i].name+"</td>";
+            html+="<td>"+rows[i].amount+"</td>";
+            html+="<td>"+rows[i].user+"</td>";
+            html+="<td>"+rows[i].date+"</td>";
+            html+="</tr>";
+        }
+        html += "</tbody>"
+        html += "</table>"
+        document.getElementById("withdraw-data").innerHTML = html;
+    });
+}
+
 function getInventoryData(){
     let sql = `SELECT item_id as id, item_name as name, item_amount as amount from inventorylist`;
     database.all(sql, [], (err, rows) => {
@@ -266,7 +460,7 @@ function getInventoryData(){
         }
         html += "</tbody>"
         html += "</table>"
-        document.getElementById("inventory").innerHTML = html;
+        document.getElementById("inventory-data").innerHTML = html;
     });
 }
 
@@ -278,6 +472,7 @@ function getData(sql, id){
                 throw err;
             }
             else{
+                console.log(rows);
                 var obj = {
                     id: rows[0].item_id || "",
                     amount: rows[0].item_amount || "",
@@ -285,6 +480,7 @@ function getData(sql, id){
                     date: rows[0].item_date || "",
                     user: rows[0].item_user || ""
                 }
+                console.log(obj);
                 resolve(obj);
             }
         });

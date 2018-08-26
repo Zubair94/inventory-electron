@@ -2,7 +2,10 @@
 const { remote } = require('electron');
 const database_helper = require('../db_helper');
 var database = database_helper.connect();
-
+var html;
+getInventoryData();
+getDepositData();
+getWithdrawData();
 
 const indexButton = document.getElementById("index");
 indexButton.addEventListener('click', (event) => {
@@ -51,6 +54,7 @@ deleteButton.addEventListener('click', (event) => {
             }
             else{
                 document.getElementById("item_id").value = "";
+                getInventoryData();
                 $("#alert-msg").show();
                 setTimeout(function() {
                     document.getElementById("alert-msg").style.display = "none";
@@ -84,6 +88,7 @@ deleteDButton.addEventListener('click', (event) => {
                 throw err;
             }
             else{
+                getDepositData();
                 document.getElementById("item_id").value = "";
                 $("#alert-msg").show();
                 setTimeout(function() {
@@ -118,6 +123,7 @@ deleteWButton.addEventListener('click', (event) => {
                 throw err;
             }
             else{
+                getWithdrawData();
                 document.getElementById("item_id").value = "";
                 $("#alert-msg").show();
                 setTimeout(function() {
@@ -136,27 +142,86 @@ deleteWButton.addEventListener('click', (event) => {
     
 });
 
-var html;
-let sql = `SELECT item_id as id, item_name as name, item_amount as amount from inventorylist`;
-database.all(sql, [], (err, rows) => {
-    if (err) {
-        throw err;
-    }
-    //console.log(rows);
-    html = "<table id='inventory-table' class='table table-bordered'>";
-    html += "<thead>";
-    html += "<tr>";
-    html += "<tr><th scope='col'>Item ID</th><th scope='col'>Item Name</th><th scope='col'>Item Amount</th></tr>"
-    html += "</thead>"
-    html += "<tbody>"
-    for(var i = 0; i < rows.length; i++){
-        html+="<tr>";
-        html+="<th scope='row'>"+rows[i].id+"</th>";
-        html+="<td>"+rows[i].name+"</td>";
-        html+="<td>"+rows[i].amount+"</td>";
-        html+="</tr>";
-    }
-    html += "</tbody>"
-    html += "</table>"
-    document.getElementById("inventory").innerHTML = html;
-});
+
+function getDepositData(){
+    let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_date as date, item_user as user from depositlist ORDER BY datetime(item_date) DESC`;
+    database.all(sql, [], (err, rows) => {
+        if (err) {
+            throw err;
+        }
+        //console.log(rows);
+        html = "<table id='deposit-table' class='table table-bordered'>";
+        html += "<thead>";
+        html += "<tr>";
+        html += "<tr><th scope='col'>Item ID</th><th scope='col'>Item Name</th><th scope='col'>Item Amount</th><th scope='col'>Deposited By</th><th scope='col'>Deposit Date</th></tr>"
+        html += "</thead>"
+        html += "<tbody>"
+        for(var i = 0; i < rows.length; i++){
+            html+="<tr>";
+            html+="<th scope='row'>"+rows[i].id+"</th>";
+            html+="<td>"+rows[i].name+"</td>";
+            html+="<td>"+rows[i].amount+"</td>";
+            html+="<td>"+rows[i].user+"</td>";
+            html+="<td>"+rows[i].date+"</td>";
+            html+="</tr>";
+        }
+        html += "</tbody>"
+        html += "</table>"
+        document.getElementById("deposit-data").innerHTML = html;
+    });
+}
+
+
+function getWithdrawData(){
+    let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_date as date, item_user as user from withdrawlist ORDER BY datetime(item_date) DESC`;
+    database.all(sql, [], (err, rows) => {
+        if (err) {
+            throw err;
+        }
+        //console.log(rows);
+        html = "<table id='withdraw-table' class='table table-bordered'>";
+        html += "<thead>";
+        html += "<tr>";
+        html += "<tr><th scope='col'>Item ID</th><th scope='col'>Item Name</th><th scope='col'>Item Amount</th><th scope='col'>Withdrawn By</th><th scope='col'>Withdraw Date</th></tr>"
+        html += "</thead>"
+        html += "<tbody>"
+        for(var i = 0; i < rows.length; i++){
+            html+="<tr>";
+            html+="<th scope='row'>"+rows[i].id+"</th>";
+            html+="<td>"+rows[i].name+"</td>";
+            html+="<td>"+rows[i].amount+"</td>";
+            html+="<td>"+rows[i].user+"</td>";
+            html+="<td>"+rows[i].date+"</td>";
+            html+="</tr>";
+        }
+        html += "</tbody>"
+        html += "</table>"
+        document.getElementById("withdraw-data").innerHTML = html;
+    });
+}
+
+function getInventoryData(){
+    let sql = `SELECT item_id as id, item_name as name, item_amount as amount from inventorylist`;
+    database.all(sql, [], (err, rows) => {
+        if (err) {
+            throw err;
+        }
+        //console.log(rows);
+        html = "<table id='inventory-table' class='table table-bordered'>";
+        html += "<thead>";
+        html += "<tr>";
+        html += "<tr><th scope='col'>Item ID</th><th scope='col'>Item Name</th><th scope='col'>Item Amount</th></tr>"
+        html += "</thead>"
+        html += "<tbody>"
+        for(var i = 0; i < rows.length; i++){
+            html+="<tr>";
+            html+="<th scope='row'>"+rows[i].id+"</th>";
+            html+="<td>"+rows[i].name+"</td>";
+            html+="<td>"+rows[i].amount+"</td>";
+            html+="</tr>";
+        }
+        html += "</tbody>"
+        html += "</table>"
+        document.getElementById("inventory-data").innerHTML = html;
+    });
+}

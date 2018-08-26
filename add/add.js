@@ -3,7 +3,8 @@ const { remote } = require('electron');
 const database_helper = require('../db_helper');
 var database = database_helper.connect();
 
-
+var html;
+getData();
 const indexButton = document.getElementById("index");
 indexButton.addEventListener('click', (event) => {
     remote.getCurrentWindow().loadFile('./index/index.html');
@@ -55,6 +56,7 @@ addButton.addEventListener('click', (event) => {
             else{
                 document.getElementById("item_name").value = "";
                 document.getElementById("item_amount").value = "";
+                getData();
                 $("#alert-msg").show();
                 setTimeout(function() {
                     document.getElementById("alert-msg").style.display = "none";
@@ -72,8 +74,8 @@ addButton.addEventListener('click', (event) => {
     
 });
 
-var html;
-let sql = `SELECT item_id as id, item_name as name, item_amount as amount from inventorylist`;
+function getData(){
+    let sql = `SELECT item_id as id, item_name as name, item_amount as amount from inventorylist`;
 database.all(sql, [], (err, rows) => {
     if (err) {
         throw err;
@@ -95,4 +97,6 @@ database.all(sql, [], (err, rows) => {
     html += "</tbody>"
     html += "</table>"
     document.getElementById("inventory").innerHTML = html;
-});
+    });
+
+}
