@@ -9,12 +9,18 @@
     "package": "build --dir",
     "package-win": "build --dir --win",
     "package-linux": "build --dir --linux",
-    "package-mac":"build --dir --mac",
     "dist": "build",
     "dist-win": "build --win",
     "dist-linux": "build --linux",
-    "dist-mac": "build --mac"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/Zubair94/inventory-electron.git"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/Zubair94/inventory-electron/issues"
+  },
+  "homepage": "https://gitlab.com/Zubair94/inventory-electron",
   "author": "LOH Technology Division",
   "license": "ISC",
   "devDependencies": {
@@ -39,14 +45,7 @@
     "linux": {
       "icon": "icon.ico",
       "target": [
-        "deb",
-        "rpm"
-      ]
-    },
-    "mac": {
-      "icon": "icon.ico",
-      "target": [
-        "dmg"
+        "snap"
       ]
     }
   }
