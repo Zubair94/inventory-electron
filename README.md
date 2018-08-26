@@ -18,7 +18,7 @@ npm run postinstall
 ```sh
 npm run package
 ```
-Packaged app database files
+Packaged app database files<br />
 Create a file ./dist/db/inventory.db
 
 ## Package Application Windows
@@ -26,7 +26,7 @@ Create a file ./dist/db/inventory.db
 ```sh
 npm run package
 ```
-Packaged app database files
+Packaged app database files<br />
 Create a file ./dist/db/inventory.db
 
 ## Create Installer
@@ -34,5 +34,5 @@ Create a file ./dist/db/inventory.db
 ```sh
 npm run dist
 ```
-Installed app database files
+Installed app database files<br />
 Create a file ./db/inventory.db on installation directory
