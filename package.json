@@ -8,8 +8,12 @@
     "postinstall": "electron-builder install-app-deps",
     "package": "build --dir",
     "package-win": "build --dir --win",
+    "package-linux": "build --dir --linux",
+    "package-mac":"build --dir --mac",
     "dist": "build",
-    "dist-win": "build --win"
+    "dist-win": "build --win",
+    "dist-linux": "build --linux",
+    "dist-mac": "build --mac"
   },
   "author": "LOH Technology Division",
   "license": "ISC",
@@ -30,6 +34,19 @@
       "icon": "icon.ico",
       "target": [
         "nsis"
+      ]
+    },
+    "linux": {
+      "icon": "icon.ico",
+      "target": [
+        "deb",
+        "rpm"
+      ]
+    },
+    "mac": {
+      "icon": "icon.ico",
+      "target": [
+        "dmg"
       ]
     }
   }
