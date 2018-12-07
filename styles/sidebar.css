@@ -1,0 +1,7 @@
+a{
+    cursor: pointer;
+}
+.sidebar{
+    min-height: 100vh;
+    height: 100%;
+}

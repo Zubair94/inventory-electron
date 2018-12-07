@@ -47,8 +47,10 @@ database_helper.create(database, sqlCheck3, sqlCreate3).then(value => {
 
 let homeWindow;
 
+
 function createWindow(){
     homeWindow = new BrowserWindow({width: 1024, height: 768});
+    homeWindow.setMenu(null);
     homeWindow.loadURL(url.format({
         pathname: path.join(__dirname, './index/index.html'),
         protocol: 'file',
@@ -61,7 +63,14 @@ function createWindow(){
     });
 }
 
+function setWindow(){
+    const screen = electron.screen;
+    const mainScreen = screen.getPrimaryDisplay();
+    const dimensions = mainScreen.size;
+    homeWindow.setSize(dimensions.width, dimensions.height);
+}
 app.on('ready', createWindow);
+app.on('ready', setWindow);
 app.on('window-all-closed', () => {
     if(process.platform !== 'darwin'){
         database_helper.disconnect(database);

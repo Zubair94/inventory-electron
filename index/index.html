@@ -5,52 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.css">
+    <link href="../node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/theme.css">
+    <link rel="stylesheet" href="../styles/sidebar.css">
     <link rel="stylesheet" href="index.css">
     <title>Inventory Management</title>
 </head>
-<body>
-    <div class="main-div">
-        <h3>Inventory Management Index</h3>
-        <button type="button" class="btn btn-danger" id="deposit">Deposit</button>
-        <button type="button" class="btn btn-danger" id="withdraw">Withdraw</button>
-        <button type="button" class="btn btn-danger" id="report">Report</button>
-        <button type="button" class="btn btn-danger" id="add">Add</button>
-        <button type="button" class="btn btn-danger" id="delete">Delete</button>
-        <button type="button" class="btn btn-danger" id="edit">Edit</button>
-        <div class="form-group">
-            <label for="search">Search</label>
-            <input type="text" class="form-control" id="search" onkeyup="searchName()" placeholder="Enter Item Name to Search">
-        </div>
-        <div class="table-div" id="inventory">
-            
+<body id="page-top">
+    <div id="wrapper">
+        <ul class="sidebar navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" id="index">
+                <i class="fas fa-fw fa-bars"></i>
+                <span>Index</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="deposit">
+                <i class="fas fa-fw fa-plus-circle"></i>
+                <span>Deposit</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="withdraw">
+                <i class="fas fa-fw fa-minus-circle"></i>
+                <span>Withdraw</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="report">
+                <i class="fas fa-fw fa-table"></i>
+                <span>Report</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="add">
+                <i class="fas fa-fw fa-plus"></i>
+                <span>Add</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="edit">
+                <i class="fas fa-fw fa-pencil-alt"></i>
+                <span>Edit</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="delete">
+                <i class="fas fa-fw fa-trash-alt"></i>
+                <span>Delete</span></a>
+            </li>
+        </ul>
+        <div class="content-wrapper">
+            <div class="container-fluid">
+                
+                    <h3 class="text-center">Inventory Management Index</h3>
+                    <div class="dropdown mb-3">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Select Inventory
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" id="all">All</a>
+                                <a class="dropdown-item" id="ktime">Kids Time</a>
+                                <a class="dropdown-item" id="loh">Light of Hope</a>
+                                <a class="dropdown-item" id="ttime">Teachers Time</a>
+                                <a class="dropdown-item" id="tgmg">ToguMogu</a>
+                            </div>
+                    </div>
+                    <!--<button type="button" class="btn btn-danger" id="deposit">Deposit</button>
+                    <button type="button" class="btn btn-danger" id="withdraw">Withdraw</button>
+                    <button type="button" class="btn btn-danger" id="report">Report</button>
+                    <button type="button" class="btn btn-danger" id="add">Add</button>
+                    <button type="button" class="btn btn-danger" id="delete">Delete</button>
+                    <button type="button" class="btn btn-danger" id="edit">Edit</button>-->
+                    <div class="table-responsive" id="inventory">
+                        
+                    </div>
+            </div>
         </div>
     </div>
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
     <script src="../node_modules/jquery/dist/jquery.slim.min.js"></script>
     <script src="../node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../node_modules/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="../node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
+    <script src="../node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script>if (window.module) module = window.module;</script>
     <script>require('./index.js')</script>
-    <script>
-        function searchName() {
-        var input, filter, table, tr, td, i;
-        input = document.getElementById("search");
-        filter = input.value.toUpperCase();
-        //console.log("here", filter);
-        table = document.getElementById("inventory-table");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
-            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
-            }       
-        }
-        }
-    </script>
-    
 </body>
 </html>

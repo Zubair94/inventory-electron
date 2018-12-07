@@ -1,30 +1,13 @@
 const { remote } = require('electron');
 const database_helper = require('../db_helper');
 var database = database_helper.connect();
-var html;
-let sql = `SELECT item_id as id, item_name as name, item_amount as amount from inventorylist`;
-database.all(sql, [], (err, rows) => {
-    if (err) {
-        throw err;
-    }
-    //console.log(rows);
-    html = "<table id='inventory-table' class='table table-bordered'>";
-    html += "<thead>";
-    html += "<tr>";
-    html += "<tr><th scope='col'>Item ID</th><th scope='col'>Item Name</th><th scope='col'>Item Amount</th></tr>"
-    html += "</thead>"
-    html += "<tbody>"
-    for(var i = 0; i < rows.length; i++){
-        html+="<tr>";
-        html+="<th scope='row'>"+rows[i].id+"</th>";
-        html+="<td>"+rows[i].name+"</td>";
-        html+="<td>"+rows[i].amount+"</td>";
-        html+="</tr>";
-    }
-    html += "</tbody>"
-    html += "</table>"
-    document.getElementById("inventory").innerHTML = html;
-});
+
+    getData("Inventory Index");
+
+    const indexButton = document.getElementById("index");
+    indexButton.addEventListener('click', (event) => {
+        remote.getCurrentWindow().loadFile('./index/index.html');
+    });
 
     const depositButton = document.getElementById("deposit");
     depositButton.addEventListener('click', (event) => {
@@ -56,6 +39,56 @@ database.all(sql, [], (err, rows) => {
         remote.getCurrentWindow().loadFile('./edit/edit.html');
     });
 
-    
+    const allButton = document.getElementById("all");
+    allButton.addEventListener('click', (event) => {
+        getData("Inventory Index");
+    });
+    const ktimeButton = document.getElementById("ktime");
+    ktimeButton.addEventListener('click', (event) => {
+        getData("Kids Time Inventory");
+    });
+    const ttimeButton = document.getElementById("ttime");
+    ttimeButton.addEventListener('click', (event) => {
+        getData("Teachers Time Inventory");
+    });
+    const lohButton = document.getElementById("loh");
+    lohButton.addEventListener('click', (event) => {
+        getData("Light of Hope Inventory");
+    });
+    const tgmgButton = document.getElementById("tgmg");
+    tgmgButton.addEventListener('click', (event) => {
+        getData("ToguMogu Inventory");
+    });
 
+    
+    function getData(type){
+        var html;
+        let sql = `SELECT item_id as id, item_name as name, item_amount as amount from inventorylist`;
+        database.all(sql, [], (err, rows) => {
+        if (err) {
+            throw err;
+        }
+        //console.log(rows);
+        html = "<h4>"+ type +"</h4>"
+        html += "<table id='inventory-table' class='table table-bordered' width='100%' cellspacing='0'>";
+        html += "<thead>";
+        html += "<tr>";
+        html += "<tr><th scope='col'>Item ID</th><th scope='col'>Item Name</th><th scope='col'>Item Amount</th></tr>"
+        html += "</thead>"
+        html += "<tbody>"
+        for(var i = 0; i < rows.length; i++){
+            html+="<tr>";
+            html+="<th scope='row'>"+rows[i].id+"</th>";
+            html+="<td>"+rows[i].name+"</td>";
+            html+="<td>"+rows[i].amount+"</td>";
+            html+="</tr>";
+        }
+        html += "</tbody>"
+        html += "</table>"
+        document.getElementById("inventory").innerHTML = html;
+            $(document).ready(function() {
+                $('#inventory-table').DataTable();
+            });
+        });
+    }
    
