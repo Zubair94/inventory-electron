@@ -1,7 +1,5 @@
 
 const { remote } = require('electron');
-
-//var pdf = new jsPDF('p', 'pt', 'a4');
 const database_helper = require('../db_helper');
 var database = database_helper.connect();
 var download = 'none';
@@ -169,11 +167,6 @@ depositReportButton.addEventListener('click', (event) => {
             html += "</table>"
             document.getElementById("report-deposit").innerHTML = html;
             Export2Doc('report-deposit','deposit');
-            /*pdf.addHTML( document.getElementById("report-deposit"), function() {
-                pdf.setFontSize(12);
-                pdf.save('deposit.pdf');
-            });*/
-            
         });
     }
     else{
@@ -225,9 +218,6 @@ withdrawReportButton.addEventListener('click', (event) => {
         html += "</table>"
         document.getElementById("report-withdraw").innerHTML = html;
         Export2Doc('report-withdraw','withdraw');
-        /*pdf.addHTML( document.getElementById("report-withdraw"), function() {
-            pdf.save('withdraw.pdf');
-        });*/
     });
         
         
