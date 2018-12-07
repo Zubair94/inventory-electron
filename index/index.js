@@ -2,7 +2,7 @@ const { remote } = require('electron');
 const database_helper = require('../db_helper');
 var database = database_helper.connect();
 
-    getData("Inventory Index");
+    getData("All");
 
     const indexButton = document.getElementById("index");
     indexButton.addEventListener('click', (event) => {
@@ -41,23 +41,23 @@ var database = database_helper.connect();
 
     const allButton = document.getElementById("all");
     allButton.addEventListener('click', (event) => {
-        getData("Inventory Index");
+        getData("All");
     });
     const ktimeButton = document.getElementById("ktime");
     ktimeButton.addEventListener('click', (event) => {
-        getData("Kids Time Inventory");
+        getData("Kids Time");
     });
     const ttimeButton = document.getElementById("ttime");
     ttimeButton.addEventListener('click', (event) => {
-        getData("Teachers Time Inventory");
+        getData("Teachers Time");
     });
     const lohButton = document.getElementById("loh");
     lohButton.addEventListener('click', (event) => {
-        getData("Light of Hope Inventory");
+        getData("Light of Hope");
     });
     const tgmgButton = document.getElementById("tgmg");
     tgmgButton.addEventListener('click', (event) => {
-        getData("ToguMogu Inventory");
+        getData("ToguMogu");
     });
 
     
@@ -69,7 +69,7 @@ var database = database_helper.connect();
             throw err;
         }
         //console.log(rows);
-        html = "<h4>"+ type +"</h4>"
+        html = "<h4>Current Inventory: "+ type +"</h4>"
         html += "<table id='inventory-table' class='table table-bordered' width='100%' cellspacing='0'>";
         html += "<thead>";
         html += "<tr>";
