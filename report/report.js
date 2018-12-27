@@ -33,6 +33,11 @@ editButton.addEventListener('click', (event) => {
     remote.getCurrentWindow().loadFile('./edit/edit.html');
 });
 
+const reportNavButton = document.getElementById("report");
+reportNavButton.addEventListener('click', (event) => {
+    remote.getCurrentWindow().loadFile('./report/report.html');
+});
+
 
 const userWButton = document.getElementById("submit-uw");
 userWButton.addEventListener('click', (event) => {

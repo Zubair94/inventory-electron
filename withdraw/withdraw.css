@@ -1,13 +1,7 @@
 .alert{
     display: none;
 }
-.main-div{
-    margin: 5%;
-}
-
-h3{
-    text-align: center;
-}
-#submit{
-    margin-bottom: 5%;
+.content-wrapper{
+    width: 100%;
+    margin-left: 225px;
 }

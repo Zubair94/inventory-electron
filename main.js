@@ -14,18 +14,21 @@ var database = database_helper.connect();
 let sqlCreate = `CREATE TABLE inventorylist (
     item_id integer PRIMARY KEY AUTOINCREMENT,
     item_name text NOT NULL,
-    item_amount integer NOT NULL)`;
+    item_amount integer NOT NULL,
+    item_type text NOT NULL)`;
 let sqlCreate2 = `CREATE TABLE depositlist (
     item_id integer PRIMARY KEY AUTOINCREMENT,
     item_name text NOT NULL,
     item_amount integer NOT NULL,
     item_user text NOT NULL,
+    item_type text NOT NULL,
     item_date datetime DEFAULT CURRENT_TIMESTAMP)`;
 let sqlCreate3 = `CREATE TABLE withdrawlist (
     item_id integer PRIMARY KEY AUTOINCREMENT,
     item_name text NOT NULL,
     item_amount integer NOT NULL,
     item_user text NOT NULL,
+    item_type text NOT NULL,
     item_date datetime DEFAULT CURRENT_TIMESTAMP)`;
 let sqlCheck = `SELECT * from inventorylist`;
 let sqlCheck2 = `SELECT * from depositlist`;

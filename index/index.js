@@ -63,8 +63,14 @@ var database = database_helper.connect();
     
     function getData(type){
         var html;
-        let sql = `SELECT item_id as id, item_name as name, item_amount as amount from inventorylist`;
-        database.all(sql, [], (err, rows) => {
+        let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_type as type from inventorylist WHERE item_type = ?`;
+        let params = [];
+        if(type === "All"){
+            sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_type as type from inventorylist`;
+        }else{
+            params.push(type);
+        }
+        database.all(sql, params, (err, rows) => {
         if (err) {
             throw err;
         }
@@ -73,7 +79,7 @@ var database = database_helper.connect();
         html += "<table id='inventory-table' class='table table-bordered' width='100%' cellspacing='0'>";
         html += "<thead>";
         html += "<tr>";
-        html += "<tr><th scope='col'>Item ID</th><th scope='col'>Item Name</th><th scope='col'>Item Amount</th></tr>"
+        html += "<tr><th scope='col'>Item ID</th><th scope='col'>Item Name</th><th scope='col'>Item Amount</th><th scope='col'>Item Inventory</th></tr>"
         html += "</thead>"
         html += "<tbody>"
         for(var i = 0; i < rows.length; i++){
@@ -81,6 +87,7 @@ var database = database_helper.connect();
             html+="<th scope='row'>"+rows[i].id+"</th>";
             html+="<td>"+rows[i].name+"</td>";
             html+="<td>"+rows[i].amount+"</td>";
+            html+="<td>"+rows[i].type+"</td>";
             html+="</tr>";
         }
         html += "</tbody>"

@@ -4,7 +4,9 @@ const database_helper = require('../db_helper');
 var database = database_helper.connect();
 
 var html;
-getData("All");
+let currentInventoryType = "All";
+document.getElementById("current-inventory").innerHTML = "Current Inventory: " +currentInventoryType;
+getData(currentInventoryType);
 const indexButton = document.getElementById("index");
 indexButton.addEventListener('click', (event) => {
     remote.getCurrentWindow().loadFile('./index/index.html');
@@ -44,12 +46,13 @@ const addButton = document.getElementById("submit");
 addButton.addEventListener('click', (event) => {
     var name = document.getElementById("item_name").value;
     var amount = document.getElementById("item_amount").value;
-    console.log(name);
-    console.log(amount);
-    let sql = `INSERT INTO inventorylist(item_name, item_amount) VALUES (?,?)`; 
+    //console.log(name);
+    //console.log(amount);
+    //console.log(currentInventoryType);
+    let sql = `INSERT INTO inventorylist(item_name, item_amount, item_type) VALUES (?,?,?)`; 
     var isnum = /^\d+$/.test(amount);
-    if(isnum && name !== ""){
-        database.run(sql, name, amount, (err) => {
+    if(isnum && name !== "" && currentInventoryType !== "All"){
+        database.run(sql, name, amount, currentInventoryType, (err) => {
             if (err) {
                 $("#fail-msg").show();
                 setTimeout(function() {
@@ -60,7 +63,7 @@ addButton.addEventListener('click', (event) => {
             else{
                 document.getElementById("item_name").value = "";
                 document.getElementById("item_amount").value = "";
-                getData("All");
+                getData(currentInventoryType);
                 $("#alert-msg").show();
                 setTimeout(function() {
                     document.getElementById("alert-msg").style.display = "none";
@@ -80,50 +83,66 @@ addButton.addEventListener('click', (event) => {
 
 const allButton = document.getElementById("all");
 allButton.addEventListener('click', (event) => {
-    getData("All");
+    currentInventoryType = "All"
+    document.getElementById("current-inventory").innerHTML = "Current Inventory: " +currentInventoryType;
+    getData(currentInventoryType);
 });
 const ktimeButton = document.getElementById("ktime");
 ktimeButton.addEventListener('click', (event) => {
-    getData("Kids Time");
+    currentInventoryType = "Kids Time"
+    document.getElementById("current-inventory").innerHTML = "Current Inventory: " +currentInventoryType;
+    getData(currentInventoryType);
 });
 const ttimeButton = document.getElementById("ttime");
 ttimeButton.addEventListener('click', (event) => {
-    getData("Teachers Time");
+    currentInventoryType = "Teachers Time"
+    document.getElementById("current-inventory").innerHTML = "Current Inventory: " +currentInventoryType;
+    getData(currentInventoryType);
 });
 const lohButton = document.getElementById("loh");
 lohButton.addEventListener('click', (event) => {
-    getData("Light of Hope");
+    currentInventoryType = "Light of Hope"
+    document.getElementById("current-inventory").innerHTML = "Current Inventory: " +currentInventoryType;;
+    getData(currentInventoryType);
 });
 const tgmgButton = document.getElementById("tgmg");
 tgmgButton.addEventListener('click', (event) => {
-    getData("ToguMogu");
+    currentInventoryType = "ToguMogu"
+    document.getElementById("current-inventory").innerHTML = "Current Inventory: " +currentInventoryType;
+    getData(currentInventoryType);
 });
 
 function getData(type){
-    console.log("asdas");
-    let sql = `SELECT item_id as id, item_name as name, item_amount as amount from inventorylist`;
-database.all(sql, [], (err, rows) => {
-    if (err) {
-        throw err;
+    let sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_type as type from inventorylist WHERE item_type = ?`;
+    let params = [];
+    if(type === "All"){
+        sql = `SELECT item_id as id, item_name as name, item_amount as amount, item_type as type from inventorylist`;
+    }else{
+       params.push(type)
     }
-    //console.log(rows);
-    html = "<h4>Current Inventory: "+ type +"</h4>"
-    html += "<table id='inventory-table' class='table table-bordered' width='100%' cellspacing='0'>";
-    html += "<thead>";
-    html += "<tr>";
-    html += "<tr><th scope='col'>Item ID</th><th scope='col'>Item Name</th><th scope='col'>Item Amount</th></tr>"
-    html += "</thead>"
-    html += "<tbody>"
-    for(var i = 0; i < rows.length; i++){
-        html+="<tr>";
-        html+="<th scope='row'>"+rows[i].id+"</th>";
-        html+="<td>"+rows[i].name+"</td>";
-        html+="<td>"+rows[i].amount+"</td>";
-        html+="</tr>";
-    }
-    html += "</tbody>"
-    html += "</table>"
-    document.getElementById("inventory").innerHTML = html;
+    database.all(sql, params, (err, rows) => {
+        if (err) {
+            throw err;
+        }
+        //console.log(rows);
+        html = "<h4>Current Inventory: "+ type +"</h4>"
+        html += "<table id='inventory-table' class='table table-bordered' width='100%' cellspacing='0'>";
+        html += "<thead>";
+        html += "<tr>";
+        html += "<tr><th scope='col'>Item ID</th><th scope='col'>Item Name</th><th scope='col'>Item Amount</th><th scope='col'>Item Inventory</th></tr>"
+        html += "</thead>"
+        html += "<tbody>"
+        for(var i = 0; i < rows.length; i++){
+            html+="<tr>";
+            html+="<th scope='row'>"+rows[i].id+"</th>";
+            html+="<td>"+rows[i].name+"</td>";
+            html+="<td>"+rows[i].amount+"</td>";
+            html+="<td>"+rows[i].type+"</td>";
+            html+="</tr>";
+        }
+        html += "</tbody>"
+        html += "</table>"
+        document.getElementById("inventory").innerHTML = html;
         $(document).ready(function() {
             $('#inventory-table').DataTable();
         });
